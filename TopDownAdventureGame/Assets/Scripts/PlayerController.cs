@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement; //importing SceneManagement library
 public class PlayerController : MonoBehaviour
 {
     public float speed = 0.5f;
+    public bool hasLightning = false;
+    public GameObject LightningBolt;
 
     // Start is called before the first frame update
     void Start()
@@ -51,6 +53,12 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("hit");
             SceneManager.LoadScene(1); //access SceneManager class for LoadScene function
+        }
+
+        if(collision.gameObject.tag.Equals("LightningBolt"))
+        {
+            Debug.Log("obtained Lightning");
+            LightningBolt.SetActive(false); //key dissapears
         }
     }
 }

@@ -6,13 +6,22 @@ using UnityEngine.SceneManagement; //importing SceneManagement library
 public class PlayerController : MonoBehaviour
 {
     public float speed = 0.5f;
-    public bool hasLightning = false;
-    public GameObject LightningBolt;
+    public bool hasKey = false;
+
+    public GameObject key;
+
+    public static PlayerController instance; //creating an object of the class to be findable
 
     // Start is called before the first frame update
     void Start()
     {
-
+        if (instance != null) //check if instance is in the scene
+        {
+            Destroy(gameObject);
+            return;
+        }
+        instance = this;
+        GameObject.DontDestroyOnLoad(gameObject);
     }
 
     // Update is called once per frame
@@ -55,10 +64,24 @@ public class PlayerController : MonoBehaviour
             SceneManager.LoadScene(1); //access SceneManager class for LoadScene function
         }
 
-        if(collision.gameObject.tag.Equals("LightningBolt"))
+        if (collision.gameObject.tag.Equals("key"))
         {
-            Debug.Log("obtained Lightning");
-            LightningBolt.SetActive(false); //key dissapears
+            Debug.Log("obtained key");
+            //key.SetActive(false); //key disappears
+            hasKey = true; //player has the key now
+        }
+
+        //write code for exiting second scene and go back to first scene
+        if (collision.gameObject.tag.Equals("exit"))
+        {
+            Debug.Log("hit");
+            SceneManager.LoadScene(0);
+        }
+
+        if (collision.gameObject.tag.Equals("end") && hasKey == true) //needs to satisfy both conditions to enter end door
+        {
+            Debug.Log("hit");
+            SceneManager.LoadScene("EndScene");
         }
     }
 }
